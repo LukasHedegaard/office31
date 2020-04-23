@@ -12,7 +12,7 @@ def office31(
     source_name: str,
     target_name: str,
     seed=1,
-    some_to_diff_class_ratio=3,
+    same_to_diff_class_ratio=3,
     image_resize=(240, 240),
     group_in_out=True,
     framework_conversion=None,
@@ -23,7 +23,7 @@ def office31(
     Arguments:
         source {str} -- one of {'amazon','dslr','webcam'}
         target {str} -- one of {'amazon','dslr','webcam'}
-        some_to_diff_class_ratio {int} -- ratio of same-class to different-class sample pairs in the train set
+        same_to_diff_class_ratio {int} -- ratio of same-class to different-class sample pairs in the train set
         image_resize {Tuple[int,int]} -- size to resize images to. If `None`, a path is returned
         group_in_out {bool} -- group images and labels separately as input and output tuples
         framework_conversion {Optional[str]} -- framework to convert to. Options: ["tensorflow", "pytorch"]
@@ -74,7 +74,7 @@ def office31(
         "s_data", "t_data", "s_label", "t_label"
     ).split_filter(lambda x: x[2] == x[3])
 
-    if len(train_diff) > some_to_diff_class_ratio * len(train_same):
+    if len(train_diff) > same_to_diff_class_ratio * len(train_same):
         train_diff = train_diff.sample(3 * len(train_same), seed=seed)
 
     train = do.concat(train_same, train_diff).shuffle(seed)
