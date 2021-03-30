@@ -1,9 +1,9 @@
-from pathlib import Path
 import datasetops as do
+from pathlib import Path
 from .download import download_and_extract_office31
 from typing import Union
 
-OFFICE_PATH = Path(__file__).parent.parent.parent / "data"
+_OFFICE_PATH = Path(__file__).parent.parent.parent / "data"
 
 domains = {"amazon", "dslr", "webcam"}
 
@@ -41,16 +41,16 @@ def office31(
     num_source_per_class = 20 if source_name == "amazon" else 8
     num_target_per_class = 3
 
-    office_path = Path(office_path) if office_path else OFFICE_PATH
+    office_path = Path(office_path) if office_path else _OFFICE_PATH
 
     if not office_path.exists():
         download_and_extract_office31(office_path)
         assert office_path.exists()
 
-    source = do.from_folder_class_data(OFFICE_PATH / source_name / "images").named(
+    source = do.from_folder_class_data(office_path / source_name / "images").named(
         "s_data", "s_label"
     )
-    target = do.from_folder_class_data(OFFICE_PATH / target_name / "images").named(
+    target = do.from_folder_class_data(office_path / target_name / "images").named(
         "t_data", "t_label"
     )
 
